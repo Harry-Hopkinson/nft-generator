@@ -100,3 +100,14 @@ function createImage(idx: any) {
         svgToPNG(idx)
     }
 }
+
+if (!existsSync("./out")) {
+    mkdirSync("./out");
+}
+
+readdirSync("./out").forEach(f => rmSync(`./out/${f}`));
+
+do {
+    createImage(idx);
+    idx--;
+} while (idx >= 0);
