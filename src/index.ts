@@ -49,8 +49,8 @@ function getLayer(name: string, skip=0.0) {
 }
 
 async function svgToPng(name: any) {
-    const src = `./out/${name}.svg`;
-    const dest = `./out/${name}.png`;
+    const src = `./images/${name}.svg`;
+    const dest = `./images/${name}.png`;
 
     const img = await sharp(src);
     const resized = await img.resize(1024);
@@ -93,17 +93,17 @@ function createImage(idx: number | undefined) {
                 }
             ]
         }
-        writeFileSync(`./out/${idx}.json`, JSON.stringify(meta))
-        writeFileSync(`./out/${idx}.svg`, final)
+        writeFileSync(`./images/${idx}.json`, JSON.stringify(meta))
+        writeFileSync(`./images/${idx}.svg`, final)
         svgToPng(idx)
     }
 }
 
-if (!existsSync('./out')){
-    mkdirSync('./out');
+if (!existsSync('./images')){
+    mkdirSync('./images');
 }
 
-readdirSync('./out').forEach((f: any) => rmSync(`./out/${f}`));
+readdirSync('./images').forEach((f: any) => rmSync(`./images/${f}`));
 
 do {
     createImage(idx);

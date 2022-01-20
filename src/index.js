@@ -73,8 +73,8 @@ function svgToPng(name) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    src = "./out/" + name + ".svg";
-                    dest = "./out/" + name + ".png";
+                    src = "./images/" + name + ".svg";
+                    dest = "./images/" + name + ".png";
                     return [4 /*yield*/, sharp(src)];
                 case 1:
                     img = _a.sent();
@@ -123,15 +123,15 @@ function createImage(idx) {
                 }
             ]
         };
-        writeFileSync("./out/" + idx + ".json", JSON.stringify(meta));
-        writeFileSync("./out/" + idx + ".svg", final);
+        writeFileSync("./images/" + idx + ".json", JSON.stringify(meta));
+        writeFileSync("./images/" + idx + ".svg", final);
         svgToPng(idx);
     }
 }
-if (!existsSync('./out')) {
-    mkdirSync('./out');
+if (!existsSync('./images')) {
+    mkdirSync('./images');
 }
-readdirSync('./out').forEach(function (f) { return rmSync("./out/" + f); });
+readdirSync('./images').forEach(function (f) { return rmSync("./images/" + f); });
 do {
     createImage(idx);
     idx--;
