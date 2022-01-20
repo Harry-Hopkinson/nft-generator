@@ -20,3 +20,7 @@ var idx = 999;
 function randInt(max: number) {
     return Math.floor(Math.random() * (max + 1));
 }
+
+function randElement(arr: string | any[]) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
