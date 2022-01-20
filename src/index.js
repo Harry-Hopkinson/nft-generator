@@ -62,7 +62,7 @@ function getRandomName() {
 }
 function getLayer(name, skip) {
     if (skip === void 0) { skip = 0.0; }
-    var svg = readFileSync("./layers/" + name + ".svg", 'utf-8');
+    var svg = readFileSync("../layers/" + name + ".svg", 'utf-8');
     var re = /(?<=\<svg\s*[^>]*>)([\s\S]*?)(?=\<\/svg\>)/g;
     var layer = svg.match(re)[0];
     return Math.random() > skip ? layer : '';
