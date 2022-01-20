@@ -14,7 +14,7 @@ const template = `
 `
 
 const takenNames : any = {};
-const takenFaces = {};
+const takenFaces : any = {};
 var idx = 999;
 
 function randInt(max: number) {
@@ -56,4 +56,47 @@ async function svgToPNG(name: any) {
     const image = await sharp(src);
     const resized = await image.resize(1024);
     await resized.toFile(dest);
+}
+
+function createImage(idx: any) {
+    const bg = randInt(5);
+    const hair = randInt(7);
+    const eyes = randInt(9);
+    const nose = randInt(4); 
+    const mouth = randInt(5);
+    const beard = randInt(3);
+    const face : any = [hair, eyes, mouth, nose, beard].join("");
+
+    if (face[takenFaces]) {
+        createImage(null);
+    }
+    else {
+        const name = getRandomName()
+        console.log(name)
+        face[takenFaces] = face;
+
+        const final = template
+            .replace('<!-- bg -->', getLayer(`bg${bg}`))
+            .replace('<!-- head -->', getLayer('head0'))
+            .replace('<!-- hair -->', getLayer(`hair${hair}`))
+            .replace('<!-- eyes -->', getLayer(`eyes${eyes}`))
+            .replace('<!-- nose -->', getLayer(`nose${nose}`))
+            .replace('<!-- mouth -->', getLayer(`mouth${mouth}`))
+            .replace('<!-- beard -->', getLayer(`beard${beard}`, 0.5))
+
+        const meta = {
+            name,
+            description: `A drawing of ${name.split('-').join(' ')}`,
+            image: `${idx}.png`,
+            attributes: [
+                { 
+                    beard: '',
+                    rarity: 0.5
+                }
+            ]
+        }
+        writeFileSync(`./out/${idx}.json`, JSON.stringify(meta))
+        writeFileSync(`./out/${idx}.svg`, final)
+        svgToPNG(idx)
+    }
 }
