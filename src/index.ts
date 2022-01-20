@@ -13,7 +13,7 @@ const template = `
     </svg>
 `
 
-const takenNames = {};
+const takenNames : any = {};
 const takenFaces = {};
 var idx = 999;
 
@@ -23,4 +23,21 @@ function randInt(max: number) {
 
 function randElement(arr: string | any[]) {
     return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function getRandomName(): any {
+    const adjectives = "Fired Trashy Tubular Nasty Jacked Swol Buff Ferocious Firey Flamin Agnostic Artificial Bloody Crazy Cringey Crusty Dirty Eccentric Glutinous Harry Juicy Simple Stylish Awesome Creepy Corny Freaky Shady Sketchy Lame Sloppy Hot Intrepid Juxtaposed Killer Ludicrous Mangy Pastey Ragin Rusty Rockin Sinful Shameful Stupid Sterile Ugly Vascular Wild Young Old Zealous Flamboyant Super Sly Shifty Trippy Fried Injured Depressed Anxious Clinical".split(' ');
+    const names : any = "Aaron Bart Chad Dale Earl Fred Grady Harry Ivan Jeff Joe Kyle Lester Steve Tanner Lucifer Todd Mitch Hunter Mike Arnold Norbert Olaf Plop Quinten Randy Saul Balzac Tevin Jack Ulysses Vince Will Xavier Yusuf Zack Roger Raheem Rex Dustin Seth Bronson Dennis".split(" ");
+
+    const randAdj = randElement(adjectives);
+    const randName = randElement(names);
+    const name = `${randAdj}-${randName}`
+
+    if (takenNames[name] || !name) {
+        return getRandomName();
+    }
+    else {
+        takenNames[names] = name;
+        return name;
+    }
 }
