@@ -1,5 +1,5 @@
 const { readFileSync, writeFileSync, readdirSync, rmSync, existsSync, mkdirSync } = require('fs');
-import sharp from 'sharp';
+const sharp = require('sharp');
 
 const template = `
     <svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -26,13 +26,12 @@ function randElement(arr: string | any[]) {
 }
 
 function getRandomName(): any {
-    const adjectives = 'fired trashy tubular nasty jacked swol buff ferocious firey flamin agnostic artificial bloody crazy cringey crusty dirty eccentric glutinous harry juicy simple stylish awesome creepy corny freaky shady sketchy lame sloppy hot intrepid juxtaposed killer ludicrous mangy pastey ragin rusty rockin sinful shameful stupid sterile ugly vascular wild young old zealous flamboyant super sly shifty trippy fried injured depressed anxious clinical'.split(' ');
-    const names = 'aaron bart chad dale earl fred grady harry ivan jeff joe kyle lester steve tanner lucifer todd mitch hunter mike arnold norbert olaf plop quinten randy saul balzac tevin jack ulysses vince will xavier yusuf zack roger raheem rex dustin seth bronson dennis'.split(' ');
+    const adjectives = "Fired Trashy Tubular Nasty Jacked Swol Buff Ferocious Firey Flamin Agnostic Artificial Bloody Crazy Cringey Crusty Dirty Eccentric Glutinous Harry Juicy Simple Stylish Awesome Creepy Corny Freaky Shady Sketchy Lame Sloppy Hot Intrepid Juxtaposed Killer Ludicrous Mangy Pastey Ragin Rusty Rockin Sinful Shameful Stupid Sterile Ugly Vascular Wild Young Old Zealous Flamboyant Super Sly Shifty Trippy Fried Injured Depressed Anxious Clinical".split(' ');
+    const names : any = "Aaron Bart Chad Dale Earl Fred Grady Harry Ivan Jeff Joe Kyle Lester Steve Tanner Lucifer Todd Mitch Hunter Mike Arnold Norbert Olaf Plop Quinten Randy Saul Balzac Tevin Jack Ulysses Vince Will Xavier Yusuf Zack Roger Raheem Rex Dustin Seth Bronson Dennis".split(" ");
     
     const randAdj = randElement(adjectives);
     const randName = randElement(names);
     const name =  `${randAdj}-${randName}`;
-
 
     if (takenNames[name] || !name) {
         return getRandomName();
@@ -49,7 +48,7 @@ function getLayer(name: string, skip=0.0) {
     return Math.random() > skip ? layer : '';
 }
 
-async function svgToPng(name: number | null) {
+async function svgToPng(name: any) {
     const src = `./out/${name}.svg`;
     const dest = `./out/${name}.png`;
 
@@ -58,8 +57,7 @@ async function svgToPng(name: number | null) {
     await resized.toFile(dest);
 }
 
-
-function createImage(idx: number | null) {
+function createImage(idx: number | undefined) {
     const bg = randInt(5);
     const hair = randInt(7);
     const eyes = randInt(9);
@@ -70,8 +68,7 @@ function createImage(idx: number | null) {
 
     if (face[takenFaces]) {
         createImage(null);
-    } 
-    else {
+    } else {
         const name = getRandomName()
         console.log(name)
         face[takenFaces] = face;
@@ -100,8 +97,6 @@ function createImage(idx: number | null) {
         writeFileSync(`./out/${idx}.svg`, final)
         svgToPng(idx)
     }
-
-
 }
 
 if (!existsSync('./out')){
