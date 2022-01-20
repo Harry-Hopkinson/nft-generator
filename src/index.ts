@@ -1,5 +1,5 @@
-import { readFileSync, writeFileSync, readdirSync, rmSync, existsSync, mkdirSync } from "fs";
-const sharp = require("sharp");
+const { readFileSync, writeFileSync, readdirSync, rmSync, existsSync, mkdirSync } = require('fs');
+const sharp = require('sharp');
 
 const template = `
     <svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -15,7 +15,7 @@ const template = `
 
 const takenNames : any = {};
 const takenFaces : any = {};
-var idx = 999;
+let idx = 999;
 
 function randInt(max: number) {
     return Math.floor(Math.random() * (max + 1));
@@ -26,50 +26,51 @@ function randElement(arr: string | any[]) {
 }
 
 function getRandomName(): any {
-    const adjectives = "Fired Trashy Tubular Nasty Jacked Swol Buff Ferocious Firey Flamin Agnostic Artificial Bloody Crazy Cringey Crusty Dirty Eccentric Glutinous Harry Juicy Simple Stylish Awesome Creepy Corny Freaky Shady Sketchy Lame Sloppy Hot Intrepid Juxtaposed Killer Ludicrous Mangy Pastey Ragin Rusty Rockin Sinful Shameful Stupid Sterile Ugly Vascular Wild Young Old Zealous Flamboyant Super Sly Shifty Trippy Fried Injured Depressed Anxious Clinical".split(' ');
-    const names : any = "Aaron Bart Chad Dale Earl Fred Grady Harry Ivan Jeff Joe Kyle Lester Steve Tanner Lucifer Todd Mitch Hunter Mike Arnold Norbert Olaf Plop Quinten Randy Saul Balzac Tevin Jack Ulysses Vince Will Xavier Yusuf Zack Roger Raheem Rex Dustin Seth Bronson Dennis".split(" ");
-
+    const adjectives = 'fired trashy tubular nasty jacked swol buff ferocious firey flamin agnostic artificial bloody crazy cringey crusty dirty eccentric glutinous harry juicy simple stylish awesome creepy corny freaky shady sketchy lame sloppy hot intrepid juxtaposed killer ludicrous mangy pastey ragin rusty rockin sinful shameful stupid sterile ugly vascular wild young old zealous flamboyant super sly shifty trippy fried injured depressed anxious clinical'.split(' ');
+    const names = 'aaron bart chad dale earl fred grady harry ivan jeff joe kyle lester steve tanner lucifer todd mitch hunter mike arnold norbert olaf plop quinten randy saul balzac tevin jack ulysses vince will xavier yusuf zack roger raheem rex dustin seth bronson dennis'.split(' ');
+    
     const randAdj = randElement(adjectives);
     const randName = randElement(names);
-    const name = `${randAdj}-${randName}`
+    const name =  `${randAdj}-${randName}`;
+
 
     if (takenNames[name] || !name) {
         return getRandomName();
-    }
-    else {
-        takenNames[names] = name;
+    } else {
+        takenNames[name] = name;
         return name;
     }
 }
 
-function getLayer(name: any, skip=0.0) {
+function getLayer(name: string, skip=0.0) {
     const svg = readFileSync(`./layers/${name}.svg`, 'utf-8');
-    const re : any = /(?<=\<svg\s*[^>]*>)([\s\S]*?)(?=\<\/svg\>)/g
-    const layer = svg.match(re[0]);
+    const re = /(?<=\<svg\s*[^>]*>)([\s\S]*?)(?=\<\/svg\>)/g
+    const layer = svg.match(re)[0];
     return Math.random() > skip ? layer : '';
 }
 
-async function svgToPNG(name: any) {
+async function svgToPng(name: number | null) {
     const src = `./out/${name}.svg`;
     const dest = `./out/${name}.png`;
 
-    const image = await sharp(src);
-    const resized = await image.resize(1024);
+    const img = await sharp(src);
+    const resized = await img.resize(1024);
     await resized.toFile(dest);
 }
 
-function createImage(idx: any) {
+
+function createImage(idx: number | null) {
     const bg = randInt(5);
     const hair = randInt(7);
     const eyes = randInt(9);
     const nose = randInt(4); 
     const mouth = randInt(5);
     const beard = randInt(3);
-    const face : any = [hair, eyes, mouth, nose, beard].join("");
+    const face : any = [hair, eyes, mouth, nose, beard].join('');
 
     if (face[takenFaces]) {
         createImage(null);
-    }
+    } 
     else {
         const name = getRandomName()
         console.log(name)
@@ -97,15 +98,17 @@ function createImage(idx: any) {
         }
         writeFileSync(`./out/${idx}.json`, JSON.stringify(meta))
         writeFileSync(`./out/${idx}.svg`, final)
-        svgToPNG(idx)
+        svgToPng(idx)
     }
+
+
 }
 
-if (!existsSync("./out")) {
-    mkdirSync("./out");
+if (!existsSync('./out')){
+    mkdirSync('./out');
 }
 
-readdirSync("./out").forEach(f => rmSync(`./out/${f}`));
+readdirSync('./out').forEach((f: any) => rmSync(`./out/${f}`));
 
 do {
     createImage(idx);
