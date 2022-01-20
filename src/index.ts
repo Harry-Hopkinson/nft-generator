@@ -48,3 +48,12 @@ function getLayer(name: any, skip=0.0) {
     const layer = svg.match(re[0]);
     return Math.random() > skip ? layer : '';
 }
+
+async function svgToPNG(name: any) {
+    const src = `./out/${name}.svg`;
+    const dest = `./out/${name}.png`;
+
+    const image = await sharp(src);
+    const resized = await image.resize(1024);
+    await resized.toFile(dest);
+}
