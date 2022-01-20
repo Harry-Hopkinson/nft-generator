@@ -12,3 +12,11 @@ const template = `
         <!-- beard -->
     </svg>
 `
+
+const takenNames = {};
+const takenFaces = {};
+var idx = 999;
+
+function randInt(max: number) {
+    return Math.floor(Math.random() * (max + 1));
+}
