@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _a = require('fs'), readFileSync = _a.readFileSync, writeFileSync = _a.writeFileSync, readdirSync = _a.readdirSync, rmSync = _a.rmSync, existsSync = _a.existsSync, mkdirSync = _a.mkdirSync;
 var sharp = require('sharp');
+var readline = require("readline");
 var template = "\n    <svg width=\"256\" height=\"256\" viewBox=\"0 0 256 256\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n        <!-- bg -->\n        <!-- head -->\n        <!-- hair -->\n        <!-- eyes -->\n        <!-- nose -->\n        <!-- mouth -->\n        <!-- beard -->\n    </svg>\n";
 var takenNames = {};
 var takenFaces = {};
@@ -51,7 +52,7 @@ function getRandomName() {
     var names = "Aaron Bart Chad Dale Earl Fred Grady Harry Ivan Jeff Joe Kyle Lester Steve Tanner Lucifer Todd Mitch Hunter Mike Arnold Norbert Olaf Plop Quinten Randy Saul Balzac Tevin Jack Ulysses Vince Will Xavier Yusuf Zack Roger Raheem Rex Dustin Seth Bronson Dennis".split(" ");
     var randAdj = randElement(adjectives);
     var randName = randElement(names);
-    var name = randAdj + "-" + randName;
+    var name = "".concat(randAdj, "-").concat(randName);
     if (takenNames[name] || !name) {
         return getRandomName();
     }
@@ -62,7 +63,7 @@ function getRandomName() {
 }
 function getLayer(name, skip) {
     if (skip === void 0) { skip = 0.0; }
-    var svg = readFileSync("../layers/" + name + ".svg", 'utf-8');
+    var svg = readFileSync("../layers/".concat(name, ".svg"), 'utf-8');
     var re = /(?<=\<svg\s*[^>]*>)([\s\S]*?)(?=\<\/svg\>)/g;
     var layer = svg.match(re)[0];
     return Math.random() > skip ? layer : '';
@@ -73,8 +74,8 @@ function svgToPng(name) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    src = "./images/" + name + ".svg";
-                    dest = "./images/" + name + ".png";
+                    src = "./images/".concat(name, ".svg");
+                    dest = "./images/".concat(name, ".png");
                     return [4 /*yield*/, sharp(src)];
                 case 1:
                     img = _a.sent();
@@ -105,17 +106,17 @@ function createImage(idx) {
         console.log(name_1);
         face[takenFaces] = face;
         var final = template
-            .replace('<!-- bg -->', getLayer("bg" + bg))
+            .replace('<!-- bg -->', getLayer("bg".concat(bg)))
             .replace('<!-- head -->', getLayer('head0'))
-            .replace('<!-- hair -->', getLayer("hair" + hair))
-            .replace('<!-- eyes -->', getLayer("eyes" + eyes))
-            .replace('<!-- nose -->', getLayer("nose" + nose))
-            .replace('<!-- mouth -->', getLayer("mouth" + mouth))
-            .replace('<!-- beard -->', getLayer("beard" + beard, 0.5));
+            .replace('<!-- hair -->', getLayer("hair".concat(hair)))
+            .replace('<!-- eyes -->', getLayer("eyes".concat(eyes)))
+            .replace('<!-- nose -->', getLayer("nose".concat(nose)))
+            .replace('<!-- mouth -->', getLayer("mouth".concat(mouth)))
+            .replace('<!-- beard -->', getLayer("beard".concat(beard), 0.5));
         var meta = {
             name: name_1,
-            description: "A drawing of " + name_1.split('-').join(' '),
-            image: idx + ".png",
+            description: "A drawing of ".concat(name_1.split('-').join(' ')),
+            image: "".concat(idx, ".png"),
             attributes: [
                 {
                     beard: '',
@@ -123,16 +124,19 @@ function createImage(idx) {
                 }
             ]
         };
-        writeFileSync("./images/" + idx + ".json", JSON.stringify(meta));
-        writeFileSync("./images/" + idx + ".svg", final);
+        writeFileSync("./images/".concat(idx, ".json"), JSON.stringify(meta));
+        writeFileSync("./images/".concat(idx, ".svg"), final);
         svgToPng(idx);
     }
 }
 if (!existsSync('./images')) {
     mkdirSync('./images');
 }
-readdirSync('./images').forEach(function (f) { return rmSync("./images/" + f); });
+readdirSync('./images').forEach(function (f) { return rmSync("./images/".concat(f)); });
 do {
     createImage(idx);
     idx--;
 } while (idx >= 0);
+if (idx <= 0) {
+    process.exit();
+}
