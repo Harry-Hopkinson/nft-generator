@@ -36,11 +36,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _a = require('fs'), readFileSync = _a.readFileSync, writeFileSync = _a.writeFileSync, readdirSync = _a.readdirSync, rmSync = _a.rmSync, existsSync = _a.existsSync, mkdirSync = _a.mkdirSync;
 var sharp = require('sharp');
-var readline = require("readline");
+var ps = require("prompt-sync");
+var inputPrompt = ps();
 var template = "\n    <svg width=\"256\" height=\"256\" viewBox=\"0 0 256 256\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n        <!-- bg -->\n        <!-- head -->\n        <!-- hair -->\n        <!-- eyes -->\n        <!-- nose -->\n        <!-- mouth -->\n        <!-- beard -->\n    </svg>\n";
 var takenNames = {};
 var takenFaces = {};
-var idx = 999;
+var idx = inputPrompt("How many NFT's do you want to generate? ");
 function randInt(max) {
     return Math.floor(Math.random() * (max + 1));
 }
@@ -136,7 +137,7 @@ readdirSync('./images').forEach(function (f) { return rmSync("./images/".concat(
 do {
     createImage(idx);
     idx--;
-} while (idx >= 0);
+} while (idx >= 1);
 if (idx <= 0) {
     process.exit();
 }

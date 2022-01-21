@@ -1,13 +1,7 @@
 const { readFileSync, writeFileSync, readdirSync, rmSync, existsSync, mkdirSync } = require('fs');
 const sharp = require('sharp');
-const readline = require("readline");
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-});
 const ps = require("prompt-sync");
 const inputPrompt = ps();
-
 const template = `
     <svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
         <!-- bg -->
