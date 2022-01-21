@@ -13,7 +13,6 @@ const template = `
         <!-- beard -->
     </svg>
 `
-
 const takenNames : any = {};
 const takenFaces : any = {};
 let idx = 999;
@@ -73,7 +72,6 @@ function createImage(idx: number | undefined) {
         const name = getRandomName()
         console.log(name)
         face[takenFaces] = face;
-
         const final = template
             .replace('<!-- bg -->', getLayer(`bg${bg}`))
             .replace('<!-- head -->', getLayer('head0'))
@@ -82,7 +80,6 @@ function createImage(idx: number | undefined) {
             .replace('<!-- nose -->', getLayer(`nose${nose}`))
             .replace('<!-- mouth -->', getLayer(`mouth${mouth}`))
             .replace('<!-- beard -->', getLayer(`beard${beard}`, 0.5))
-
         const meta = {
             name,
             description: `A drawing of ${name.split('-').join(' ')}`,
@@ -110,3 +107,7 @@ do {
     createImage(idx);
     idx--;
 } while (idx >= 0);
+
+if (idx <= 0) {
+    process.exit();
+}
