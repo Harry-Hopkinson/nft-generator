@@ -53,7 +53,7 @@ function getRandomName() {
     var names = "Aaron Bart Chad Dale Earl Fred Grady Harry Ivan Jeff Joe Kyle Lester Steve Tanner Lucifer Todd Mitch Hunter Mike Arnold Norbert Olaf Plop Quinten Randy Saul Balzac Tevin Jack Ulysses Vince Will Xavier Yusuf Zack Roger Raheem Rex Dustin Seth Bronson Dennis".split(" ");
     var randAdj = randElement(adjectives);
     var randName = randElement(names);
-    var name = "".concat(randAdj, "-").concat(randName);
+    var name = randAdj + "-" + randName;
     if (takenNames[name] || !name) {
         return getRandomName();
     }
@@ -64,7 +64,7 @@ function getRandomName() {
 }
 function getLayer(name, skip) {
     if (skip === void 0) { skip = 0.0; }
-    var svg = readFileSync("../layers/".concat(name, ".svg"), 'utf-8');
+    var svg = readFileSync("../layers/" + name + ".svg", 'utf-8');
     var re = /(?<=\<svg\s*[^>]*>)([\s\S]*?)(?=\<\/svg\>)/g;
     var layer = svg.match(re)[0];
     return Math.random() > skip ? layer : '';
@@ -75,8 +75,8 @@ function svgToPng(name) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    src = "./images/".concat(name, ".svg");
-                    dest = "./images/".concat(name, ".png");
+                    src = "./images/" + name + ".svg";
+                    dest = "./images/" + name + ".png";
                     return [4 /*yield*/, sharp(src)];
                 case 1:
                     img = _a.sent();
@@ -107,17 +107,17 @@ function createImage(idx) {
         console.log(name_1);
         face[takenFaces] = face;
         var final = template
-            .replace('<!-- bg -->', getLayer("bg".concat(bg)))
+            .replace('<!-- bg -->', getLayer("bg" + bg))
             .replace('<!-- head -->', getLayer('head0'))
-            .replace('<!-- hair -->', getLayer("hair".concat(hair)))
-            .replace('<!-- eyes -->', getLayer("eyes".concat(eyes)))
-            .replace('<!-- nose -->', getLayer("nose".concat(nose)))
-            .replace('<!-- mouth -->', getLayer("mouth".concat(mouth)))
-            .replace('<!-- beard -->', getLayer("beard".concat(beard), 0.5));
+            .replace('<!-- hair -->', getLayer("hair" + hair))
+            .replace('<!-- eyes -->', getLayer("eyes" + eyes))
+            .replace('<!-- nose -->', getLayer("nose" + nose))
+            .replace('<!-- mouth -->', getLayer("mouth" + mouth))
+            .replace('<!-- beard -->', getLayer("beard" + beard, 0.5));
         var meta = {
             name: name_1,
-            description: "A drawing of ".concat(name_1.split('-').join(' ')),
-            image: "".concat(idx, ".png"),
+            description: "A drawing of " + name_1.split('-').join(' '),
+            image: idx + ".png",
             attributes: [
                 {
                     beard: '',
@@ -125,15 +125,15 @@ function createImage(idx) {
                 }
             ]
         };
-        writeFileSync("./images/".concat(idx, ".json"), JSON.stringify(meta));
-        writeFileSync("./images/".concat(idx, ".svg"), final);
+        writeFileSync("./images/" + idx + ".json", JSON.stringify(meta));
+        writeFileSync("./images/" + idx + ".svg", final);
         svgToPng(idx);
     }
 }
 if (!existsSync('./images')) {
     mkdirSync('./images');
 }
-readdirSync('./images').forEach(function (f) { return rmSync("./images/".concat(f)); });
+readdirSync('./images').forEach(function (f) { return rmSync("./images/" + f); });
 do {
     createImage(idx);
     idx--;
